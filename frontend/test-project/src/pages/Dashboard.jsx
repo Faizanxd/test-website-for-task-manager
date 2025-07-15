@@ -3,7 +3,7 @@ import TaskList from "../components/TaskList";
 import Logs from "../components/Logs";
 import useAuth from "../context/useAuth";
 import UserTaskCounts from "../components/UserTaskCounts";
-import KanbanBoard from "./pages/KanbanBoard";
+import KanbanBoard from "./KanbanBoard";
 
 function Dashboard() {
   const { user, logout } = useAuth();
