@@ -3,6 +3,7 @@ import TaskList from "../components/TaskList";
 import Logs from "../components/Logs";
 import useAuth from "../context/useAuth";
 import UserTaskCounts from "../components/UserTaskCounts";
+import KanbanBoard from "./pages/KanbanBoard";
 
 function Dashboard() {
   const { user, logout } = useAuth();
@@ -12,12 +13,10 @@ function Dashboard() {
       <h2>Welcome {user?.username}</h2>
       <button onClick={logout}>Logout</button>
 
-      <p>
-        <Link to="/kanban">Go to Kanban Board</Link>
-      </p>
       <h3>Task Manager</h3>
       <TaskForm />
       <TaskList />
+      <KanbanBoard />
       <UserTaskCounts />
       <Logs />
     </div>
