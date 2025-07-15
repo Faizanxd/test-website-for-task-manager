@@ -28,7 +28,6 @@ function Logs({ taskId }) {
 
   useEffect(() => {
     loadLogs();
-    console.log("Rendered Logs:", logs);
     const handleUpdate = (data) => {
       if (!taskId || data.task?._id === taskId) {
         loadLogs();
