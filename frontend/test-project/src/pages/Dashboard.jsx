@@ -12,6 +12,9 @@ function Dashboard() {
       <h2>Welcome {user?.username}</h2>
       <button onClick={logout}>Logout</button>
 
+      <p>
+        <Link to="/kanban">Go to Kanban Board</Link>
+      </p>
       <h3>Task Manager</h3>
       <TaskForm />
       <TaskList />
