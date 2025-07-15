@@ -13,16 +13,14 @@ connectDB();
 
 const app = express();
 
-// ✅ Read allowed origins from .env (comma-separated list)
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",")
-  : ["http://localhost:5173"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.ALLOWED_ORIGINS, // from .env
+];
 
-// ✅ Express CORS config
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow Postman/cURL (no origin) and matching allowed origins
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
@@ -35,12 +33,11 @@ app.use(
 
 app.use(express.json());
 
-// ✅ Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
-// ✅ HTTP server + socket.io setup
 const server = http.createServer(app);
+
 const io = socketIO(server, {
   cors: {
     origin: allowedOrigins,
@@ -48,9 +45,9 @@ const io = socketIO(server, {
     credentials: true,
   },
 });
+
 setIO(io);
 
-// ✅ Socket events
 io.on("connection", (socket) => {
   console.log("✅ Client connected:", socket.id);
 
@@ -59,6 +56,5 @@ io.on("connection", (socket) => {
   });
 });
 
-// ✅ Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
