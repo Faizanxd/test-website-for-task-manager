@@ -1,8 +1,10 @@
+// src/api/axios.js
 import axios from "axios";
 
+// Base URL from Vite environment variables
 const instance = axios.create({
-  baseURL: "http://localhost:5000", // 👈 Your Express server
-  withCredentials: true, // ✅ Include cookies if needed
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5000",
+  withCredentials: true,
 });
 
 export default instance;

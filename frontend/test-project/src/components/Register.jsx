@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "../api/axios"; // or wherever your axios helper is
-import { useNavigate, Link } from "react-router-dom"; // ✅ add Link
+import axios from "../api/axios";
+import { useNavigate, Link } from "react-router-dom";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -13,10 +13,7 @@ function Register() {
     setError("");
 
     try {
-      await axios.post("http://localhost:5000/api/auth/register", {
-        username,
-        password,
-      });
+      await axios.post("/api/auth/register", { username, password });
       alert("User registered");
       navigate("/login");
     } catch (err) {

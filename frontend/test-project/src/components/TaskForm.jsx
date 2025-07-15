@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "../api/axios"; // or wherever your axios helper is
+import axios from "../api/axios";
 import useAuth from "../context/useAuth";
 
 function TaskForm({ onTaskCreated }) {
@@ -13,9 +13,8 @@ function TaskForm({ onTaskCreated }) {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/auth/users");
+        const res = await axios.get("/api/auth/users");
         setUsers(res.data);
-        console.log("Fetched users:", res.data);
       } catch (err) {
         console.error("Failed to fetch users:", err);
       }
@@ -35,7 +34,7 @@ function TaskForm({ onTaskCreated }) {
     if (!assignedTo) return alert("Please select a user");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/tasks", {
+      await axios.post("/api/tasks", {
         title,
         description: desc,
         priority,
@@ -44,12 +43,10 @@ function TaskForm({ onTaskCreated }) {
         assignedTo,
       });
 
-      console.log("Task created:", res.data);
       alert("Task created successfully");
       resetForm();
       onTaskCreated?.();
     } catch (err) {
-      console.error("Manual task error:", err.response?.data || err.message);
       alert(err.response?.data?.error || "Error creating task");
     }
   };
@@ -58,8 +55,7 @@ function TaskForm({ onTaskCreated }) {
     e.preventDefault();
 
     try {
-      // Step 1: create task without assignedTo
-      const createRes = await axios.post("http://localhost:5000/api/tasks", {
+      const createRes = await axios.post("/api/tasks", {
         title,
         description: desc,
         priority,
@@ -69,23 +65,16 @@ function TaskForm({ onTaskCreated }) {
       });
 
       const taskId = createRes.data._id;
-      console.log("Created task for smart assign:", taskId);
 
-      // Step 2: call smart-assign
-      const smartRes = await axios.post(
-        "http://localhost:5000/api/tasks/smart-assign",
-        {
-          taskId,
-          username: user.username,
-        }
-      );
+      await axios.post("/api/tasks/smart-assign", {
+        taskId,
+        username: user.username,
+      });
 
-      console.log("Smart assigned:", smartRes.data);
       alert("Task smart assigned successfully");
       resetForm();
       onTaskCreated?.();
     } catch (err) {
-      console.error("Smart assign error:", err.response?.data || err.message);
       alert(err.response?.data?.error || "Smart assign failed");
     }
   };
